@@ -1,0 +1,51 @@
+[package]
+name = "esp32-idf-nix-setup"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.71"
+publish = false
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[features]
+default = ["std", "embassy", "esp-idf-svc/native"]
+pio = ["esp-idf-svc/pio"]
+std = ["alloc", "esp-idf-svc/binstart", "esp-idf-svc/std"]
+alloc = ["esp-idf-svc/alloc"]
+nightly = ["esp-idf-svc/nightly"]
+experimental = ["esp-idf-svc/experimental"]
+embassy = ["esp-idf-svc/embassy-sync", "esp-idf-svc/critical-section", "esp-idf-svc/embassy-time-driver"]
+
+[dependencies]
+log = { version = "0.4", default-features = false }
+esp-idf-svc = { version = "0.48.0", default-features = false }
+goolog = { version = "0.9.1", default-features = false }
+
+[build-dependencies]
+embuild = "0.31.3"
+
+# Optimize this application and its dependencies for smallest size
+# This will drastically impact compile times
+# From: https://github.com/johnthagen/min-sized-rust
+# From: https://docs.rust-embedded.org/book/unsorted/speed-vs-size.html
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+strip = true
+panic = "abort"
+[profile.release.package."*"]
+opt-level = "z"
+codegen-units = 1
+
+[profile.dev]
+debug = true # Symbols are nice and they don't increase the size on Flash
+opt-level = "z"
+lto = true
+codegen-units = 1
+strip = true
+panic = "abort"
+[profile.dev.package."*"]
+opt-level = "z"
+codegen-units = 1
