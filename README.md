@@ -17,14 +17,6 @@ If you encounter any errors or do not need root permissions to flash, remove the
 
 Install [nix-ld](https://github.com/Mic92/nix-ld)
 
-### Something inside `~/.rustup/toolchains/esp/...` is missing
-
-Reinstall the esp-rs toolchain
-```bash
-$ espup uninstall
-$ espup install
-```
-
 ## Credit
 
 Template used:
